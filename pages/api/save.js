@@ -5,8 +5,12 @@ import  { GoogleSpreadsheet } from 'google-spreadsheet'
 
 import moment from 'moment'
 
+/*const fromBase64 = (value) =>{
+    const buff =  Buffer.from(value,'base64')
+    return buff.toString('ascii')
 
-
+}
+*/
 const doc = new GoogleSpreadsheet(process.env.SHEET_DOC_ID)
 
 const genCupom = () => {
