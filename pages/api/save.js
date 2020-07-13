@@ -1,6 +1,6 @@
 import  { GoogleSpreadsheet } from 'google-spreadsheet'
 
-import { fromBase64 } from '../../utils/base64'
+import fromBase64  from  '../../utils/base64'
 
 import moment from 'moment'
 
