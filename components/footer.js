@@ -7,7 +7,7 @@ const Footer = () => {
             <div className = "container mx-auto text-center font-bold text-white">
             Projeto desenvolvido por: Gustavonvp / Linked In / GitHub
             
-            <img  width="100"src="/RIXXqUvD_400x400.jpg" />
+            <img  width="100"src="/download.png" />
             </div>
         </div>
     )
