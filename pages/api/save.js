@@ -1,65 +1,67 @@
-import  { GoogleSpreadsheet } from 'google-spreadsheet'
+import {GoogleSpreadsheet} from 'google-spreadsheet'
 
-//import fromBase64  from  '../../utils/base64'
 
 import moment from 'moment'
 
-
-
 const doc = new GoogleSpreadsheet(process.env.SHEET_DOC_ID)
 
-const genCupom = () => {
-    const code = parseInt(moment().format('YYYYMMDDHHmmssSSS')).toString(16).toUpperCase()
-    return code.substr(0,4) + '-' + code.substr(4,4) + '-' + code.substr(8,4)
+const genCoupon = () => {
+const code = parseInt(moment().format('YYMMDDHHmmssSSS')).toString(16).toUpperCase()
+return code.substr(0,4) + '-' + code.substr(4,4) + '-' + code.substr(8,4)
 }
+
+
 
 export default async(req,res) => {
 
-    try{ 
+    try {
+
         await doc.useServiceAccountAuth({
-            client_email: process.env.SHEET_CLIENT_EMAIL,
-            private_key:process.env.SHEET_PRIVATE_KEY
+            client_email:process.env.SHEET_CLIENT_EMAIL,
+            private_key: process.env.SHEET_PRIVATE_KEY
         })
-        await doc.loadInfo()
-        const sheet = doc.sheetsByIndex[1]
-        const data = JSON.parse(req.body)
+await doc.loadInfo()
+const sheet = doc.sheetsByIndex[1];
+const data = JSON.parse(req.body)
 
 
-        const sheetConfig = doc.sheetsByIndex[2]
-        await sheetConfig.loadCells('A1:B4')
+const sheetConfig = doc.sheetsByIndex[2]
+await sheetConfig.loadCells('A2:B2')
+      
         
-        const mostrarPomocaoCell = sheetConfig.getCell(2,0)
-        const textoCell = sheetConfig.getCell(2,1)
-        
-        let Cupom = ''
-        let Promo = ''
+const mostrarPromoçãoCell = sheetConfig.getCell(1,0);
+const TextoCell = sheetConfig.getCell(1,1);
 
-        if(mostrarPomocaoCell.value === 'VERDADEIRO'){
-            // TODO: gerar cupom
-            Cupom = genCupom()
-            Promo = textoCell.value
-        }
+let Cupom = ''
+let Promo = ''
 
-        //Nome:	Email:	Whatsapp:	Cupom:	Promo:
-        await sheet.addRow({
-            Nome: data.Nome,
-            Email: data.Email,
-            Whatsapp: data.Whatsapp,
-            Nota: parseInt(data.Nota),
-            DataDePreenchimento:moment().format('DD/MM/YYYY, HH:mm:ss'), // July 10th 2020, 1:56:33 pm,
-            Cupom,
-            Promo
-        })    
+if(mostrarPromoçãoCell.value === 'VERDADEIRO'){
+    // TODO: gerar cupom
 
-        res.end(JSON.stringify({
-            showCoupon: Cupom !== '',
-            Cupom,
-            Promo
+    Cupom = genCoupon()
+    Promo = TextoCell.value
+}
 
-        }))
-        }catch(err){
-            console.log(err)
-            res.end('error')
-        }
+//Nome Email Whatsapp Cupom Promo
+
+await sheet.addRow({
+    Nome: data.Nome,
+    Email: data.Email ,
+    Whatsapp: data.Whatsapp,
+    'Data Preenchimento': moment().format('DD/MM/YYYY, HH:mm:ss'),
+    Nota: parseInt(data.Nota),
+    Cupom,
+    Promo,
+})
+res.end(JSON.stringify({
+    showCoupom: Cupom !== '',
+    Cupom,
+    Promo
+}))
+
+}catch(err){
+    console.log(err)
+    res.end('error')
+}
 
 }

@@ -1,5 +1,4 @@
 import React, { useState} from 'react'
-import Head from 'next/head'
 import PageTitle from '../components/PageTitle'
 
 const Pesquisa = () => {
@@ -27,10 +26,10 @@ const Pesquisa = () => {
        })
 
        const data = await response.json()
-        setSucess(true)
-        setRetorno(data)
+       setSucess(true)
+       setRetorno(data)
         }   catch (err) {
-       
+            console.log(err)
             } 
             
        
@@ -43,6 +42,7 @@ const Pesquisa = () => {
             [key]: value
         }))
     }  
+    
     return (
         <div className="pt-6">
            <PageTitle title="Pesquisa" />
@@ -51,12 +51,13 @@ const Pesquisa = () => {
             Por esse motivo, estamos abertos a ouvir a sua opinião.</p>
             {!sucess && <div className="w-1/5 mx-auto">
                 <label className="font-bold">Seu Nome:</label>
-                <input type="text" className="p-4 block shadow bg-blue-100  my-2 rounded" placeholder="Nome"  onChange={onChange} name = "Nome"  />    
+                <input type="text" className="p-4 block shadow bg-blue-100  my-2 rounded" placeholder="Nome"  onChange={onChange} name = "Nome" value={form.Nome} />    
                 <label className="font-bold">Email</label>
-                <input type="text" className="p-4 block shadow bg-blue-100  my-2 rounded" placeholder="Email" onChange={onChange} name = "Email" /> 
+                <input type="text" className="p-4 block shadow bg-blue-100  my-2 rounded" placeholder="Email" onChange={onChange} name = "Email" value={form.Email} /> 
                 <label className="font-bold">Whatsapp</label>
-                <input type="text" className="p-4 block shadow bg-blue-100  my-2 rounded" placeholder="Whatsapp" onChange={onChange} name = "Whatsapp" /> 
+                <input type="text" className="p-4 block shadow bg-blue-100  my-2 rounded" placeholder="Whatsapp" onChange={onChange} name = "Whatsapp" value={form.Whatsapp} /> 
                 <div className="flex py-6">
+                
                 {
                     notas.map(nota => {
                     return ( 
@@ -72,32 +73,45 @@ const Pesquisa = () => {
                 <button className="bg-blue-400 px-12 py-4 font-bold rounded-lg shadow-lg hover:bg-blue-700" onClick={save}>Salvar</button>
             </div>}
 
-            {sucess && <div className="w-1/5 mx-auto">
-            <p className = "mb-6  text-center bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3">Obrigado por contribuir por sua sugestão ou crítica.</p>
-            {
-                retorno.showCoupon && <div className="text-center border p-4 mb-4">
-                    Seu cupom: <br />
-                    <span className="font-bold text-2xl">{retorno.Cupom}</span>
-                </div>
-            }
-            
-            {
-                retorno.showCoupon && <div className ="text-center border p-4 mb-4">
-                    <span className="font-bold">{retorno.Promo}</span>
-                     <br   />
-                    <span className="italic"> Tire um print ou foto desta tela e apresente ao funcionário.</span>
+            {sucess && <div className='w-1/5 mx-auto'>
+                <p className='mb-6 text-center bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3'>Obrigado por contribuir com sua sugestão ou crítica.</p>
+                {
+                retorno.showCoupom  && 
+                    <div className='text-center border p-4 mb-4'>
+                        Seu cupom: <br />
+                       <span className='font-bold text-2xl'>{retorno.Cupom}</span>
                     
-                </div>
-            }
+                    </div>
+                }
+
+                {
+                    retorno.showCoupom && 
+                    <div className='text-center border p-4 mb-4'>
+                        <span className='font-bold block mb-2'>{retorno.Promo}</span>
+                        <br />
+                        <span className='italic'>Tire um print ou foto desta tela e apresente ao atendente.</span>
+                    </div>    
+                }
+                
+                
 
             </div>}
+            
+                
+            
+
+        </div>
 
            
             
-        </div>
+        
     )
+    
+
+
+ 
 }
 
 
 
-export default Pesquisa;
+export default Pesquisa;    
