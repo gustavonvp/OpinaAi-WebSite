@@ -9,8 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: npm publish
-        if: github.event_name == 'push'
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
@@ -33,5 +31,8 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - run: npm ci
       - run: npm publish
+        if: github.event_name == 'push'
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+       
