@@ -33,6 +33,6 @@ jobs:
       - run: npm publish
         if: github.event_name == 'push'
         env:
-          NODE_AUTH_TOKEN: ${{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}}
+          NODE_AUTH_TOKEN: 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
 
        
