@@ -4,3 +4,4 @@ node_modules
 credentials.json
 planilha-ploc
 uniteled
+package-lock.json
